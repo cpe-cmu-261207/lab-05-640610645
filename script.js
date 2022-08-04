@@ -4,14 +4,8 @@ const todoCtn = document.getElementById("todo-container");
 inputAdd.onkeyup = (event) => {
   if (event.key !== "Enter") return;
 
-  if (inputAdd.value === "") {
-    alert("Todo cannot be empty");
-    inputAdd.value.style.display = "none";
-  }
-
-  const li = document.createElement("li");
-  li.innerText = inputAdd.value;
-  todoCtn.appendChild(li);
+  if (inputAdd.value === "") alert("Todo cannot be empty");
+  else addTodo(inputAdd.value);
 };
 
 function addTodo(title, completed) {
@@ -35,9 +29,34 @@ function addTodo(title, completed) {
   deleteBtn.innerText = "Delete";
   deleteBtn.className = "btn btn-danger";
 
-  //your code here
-  //append todo to HTML...
-  //define buttons event...
+  div.appendChild(span);
+  div.appendChild(doneBtn);
+  div.appendChild(deleteBtn);
+
+  doneBtn.onclick = () => {
+    if (span.style.textDecoration === "line-through")
+      span.style.textDecoration = "";
+    else span.style.textDecoration = "line-through";
+  };
+
+  deleteBtn.onclick = () => {
+    todoCtn.removeChild(div);
+  };
+  todoCtn.appendChild(div);
+  inputAdd.value = "";
+
+  doneBtn.style.display = "none";
+  deleteBtn.style.display = "none";
+
+  div.onmouseout = () => {
+    doneBtn.style.display = "none";
+    deleteBtn.style.display = "none";
+  };
+
+  div.onmouseover = () => {
+    doneBtn.style.display = "";
+    deleteBtn.style.display = "";
+  };
 }
 
 function saveTodo() {
