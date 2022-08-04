@@ -4,7 +4,14 @@ const todoCtn = document.getElementById("todo-container");
 inputAdd.onkeyup = (event) => {
   if (event.key !== "Enter") return;
 
-  //your code here
+  if (inputAdd.value === "") {
+    alert("Todo cannot be empty");
+    inputAdd.value.style.display = "none";
+  }
+
+  const li = document.createElement("li");
+  li.innerText = inputAdd.value;
+  todoCtn.appendChild(li);
 };
 
 function addTodo(title, completed) {
