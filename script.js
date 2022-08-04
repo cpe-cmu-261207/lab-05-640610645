@@ -3,9 +3,10 @@ const todoCtn = document.getElementById("todo-container");
 
 inputAdd.onkeyup = (event) => {
   if (event.key !== "Enter") return;
-
   if (inputAdd.value === "") alert("Todo cannot be empty");
-  else addTodo(inputAdd.value);
+  else addTodo(inputAdd.value, false);
+  inputAdd.value = "";
+  saveTodo();
 };
 
 function addTodo(title, completed) {
@@ -37,13 +38,14 @@ function addTodo(title, completed) {
     if (span.style.textDecoration === "line-through")
       span.style.textDecoration = "";
     else span.style.textDecoration = "line-through";
+    saveTodo();
   };
 
   deleteBtn.onclick = () => {
     todoCtn.removeChild(div);
+    saveTodo();
   };
   todoCtn.appendChild(div);
-  inputAdd.value = "";
 
   doneBtn.style.display = "none";
   deleteBtn.style.display = "none";
@@ -62,13 +64,22 @@ function addTodo(title, completed) {
 function saveTodo() {
   const data = [];
   for (const todoDiv of todoCtn.children) {
-    //your code here
+    const todoObj = {};
+    todoObj.title = todoDiv.children[0].innerText;
+    todoObj.completed =
+      todoDiv.children[0].style.textDecoration === "line-through";
+    data.push(todoObj);
   }
-  //your code here
+  const dataStr = JSON.stringify(data);
+  localStorage.setItem("todoListData", dataStr);
 }
 
 function loadTodo() {
-  //your code here
+  const dataStr = localStorage.getItem("todoListData");
+  const data = JSON.parse(dataStr);
+  for (const todoObj of data) {
+    addTodo(todoObj.title, todoObj.completed);
+  }
 }
 
 loadTodo();
